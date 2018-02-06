@@ -28,7 +28,7 @@ time.stratified <- function(data, id, covariate=F, admit_date,
   # vector of admit dates joined to the id vector
   admit_date <- data[,admit_date]
   id_date <- data.frame(id_vec, admit_date)
-
+  
   # create list of vectors of referent dates and admission date
   referent_date_list <- apply(id_date, 1, function(x){
     date_prior <- as.character(seq(as.Date(x[2]),as.Date(start_date),
@@ -46,10 +46,18 @@ time.stratified <- function(data, id, covariate=F, admit_date,
   ts_data <- do.call(rbind, referent_date_list)
   rownames(ts_data) <- NULL
   ts_data <- as.data.frame(ts_data)
+  # remove white space
+  ts_data$identifier <- gsub("[[:space:]]", "", 
+                             as.character(ts_data$identifier))
   # if covariates provided, join to the dataframe
   if(is.character(covariate)){
-    cov_data <- data[,c(id,covariate)]
-    ts_data <- merge(ts_data, cov_data, by.x = "identifier", by.y = id[])
+    cov_data <- as.data.frame(cbind(id_vec, data[,covariate]))
+    # names of cov data
+    colnames(cov_data) <- c("identifier", covariate)
+    # conver identifier to character to merge
+    cov_data$identifier <- as.character(cov_data$identifier)
+    # merge with ts_data
+    ts_data <- left_join(ts_data, cov_data, by = "identifier")
   }
   # return dataframe
   return(ts_data)
