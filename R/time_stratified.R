@@ -3,7 +3,7 @@
 #' Function creates a time-stratified case-crossover dataframe from a case-only
 #' dataframe where the outcome on a particular date can be compared to referent
 #' periods on the same day of the week.
-#' @param data Case-only data you wish to create referent observations for
+#' @param data Case-only observations you wish to create referent observations for
 #' @param id String of variable of strata identifier. Leave blank if you do not have a known identifier.
 #' @param covariate Strings of covariates you'd like to include in the time-stratified dataframe
 #' @param admit_date Date of admission. This is also sets the outcome variable to 1
