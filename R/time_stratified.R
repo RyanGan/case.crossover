@@ -38,7 +38,7 @@ time_stratified <- function(data, id, covariate=F, admit_date,
     date <- as.Date(sort(unique(c(date_prior, date_posterior))),
                     format = "%Y-%m-%d")
     identifier <- rep(x[1], length(date))
-    outcome <- ifelse(date %in% x[2], 1, 0)
+    outcome <- ifelse(date == x[2], 1, 0)
     id_date_vec <- data.frame(identifier, date, outcome)
   }) # end apply
   # timestrat dataframe
